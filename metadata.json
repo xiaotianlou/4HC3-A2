@@ -1,0 +1,7 @@
+{
+  "name": "CampusSpot",
+  "description": "A mobile-first app to discover, review, and track campus study spots. Features crowdsourced reviews, live crowd meters, and AI-powered recommendations.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
