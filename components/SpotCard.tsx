@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StudySpot } from '../types';
-import { Star, MapPin, Users, Volume2 } from 'lucide-react';
+import { Star, MapPin, Users, Volume2, ImageOff } from 'lucide-react';
 
 interface SpotCardProps {
   spot: StudySpot;
@@ -8,6 +8,8 @@ interface SpotCardProps {
 }
 
 export const SpotCard: React.FC<SpotCardProps> = ({ spot, onClick }) => {
+  const [imageError, setImageError] = useState(false);
+
   const getCrowdColor = (level: string) => {
     switch (level) {
       case 'Low': return 'text-green-600 bg-green-50';
@@ -22,12 +24,23 @@ export const SpotCard: React.FC<SpotCardProps> = ({ spot, onClick }) => {
       onClick={onClick}
       className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-4 active:scale-[0.98] transition-transform cursor-pointer"
     >
-      <div className="h-32 w-full relative">
-        <img
-          src={spot.image}
-          alt={spot.name}
-          className="w-full h-full object-cover"
-        />
+      <div className="h-32 w-full relative bg-gray-100">
+        {!imageError ? (
+          <img
+            src={spot.image}
+            alt={spot.name}
+            className="w-full h-full object-cover"
+            onError={() => setImageError(true)}
+            referrerPolicy="no-referrer"
+            loading="lazy"
+          />
+        ) : (
+          <div className="w-full h-full flex flex-col items-center justify-center text-gray-400 bg-gray-100">
+             <ImageOff size={24} className="mb-1 opacity-50" />
+             <span className="text-[10px] font-medium uppercase tracking-wider opacity-60">Image Unavailable</span>
+          </div>
+        )}
+        
         <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-md flex items-center shadow-sm">
           <Star size={12} className="text-yellow-500 fill-yellow-500 mr-1" />
           <span className="text-xs font-bold text-gray-800">{spot.rating}</span>

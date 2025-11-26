@@ -20,6 +20,33 @@
           -ms-overflow-style: none;  /* IE and Edge */
           scrollbar-width: none;  /* Firefox */
       }
+
+      /* Basic animations to replace missing tailwindcss-animate plugin */
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      @keyframes slideUp {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+      @keyframes slideDown {
+        from { transform: translateY(-20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+      
+      .animate-in.fade-in {
+        animation: fadeIn 0.4s ease-out forwards;
+      }
+      .animate-in.slide-in-from-bottom-10 {
+        animation: slideUp 0.4s ease-out forwards;
+      }
+      .animate-in.slide-in-from-top-5 {
+        animation: slideDown 0.3s ease-out forwards;
+      }
+      .animate-in.slide-in-from-right-5 {
+        animation: fadeIn 0.4s ease-out forwards; /* Fallback to fade for simplicity */
+      }
     </style>
   <script type="importmap">
 {

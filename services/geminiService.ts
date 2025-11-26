@@ -1,16 +1,20 @@
 import { GoogleGenAI } from "@google/genai";
 import { StudySpot } from "../types";
 
-const apiKey = process.env.API_KEY || '';
-const ai = new GoogleGenAI({ apiKey });
-
 export const getGeminiRecommendation = async (
   query: string,
   availableSpots: StudySpot[]
 ): Promise<string> => {
+  // Access process.env inside the function scope to ensure it's accessed at runtime
+  // This prevents crashes in environments where process might not be defined at module load time
+  const apiKey = process.env.API_KEY;
+
   if (!apiKey) {
-    return "API Key is missing. Please check your configuration.";
+    console.warn("Gemini API Key is missing");
+    return "I'm sorry, I can't connect to the server right now (Missing API Key).";
   }
+
+  const ai = new GoogleGenAI({ apiKey });
 
   const spotsContext = JSON.stringify(
     availableSpots.map((s) => ({

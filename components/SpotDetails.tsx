@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { StudySpot, Review, CrowdLevel } from '../types';
-import { ArrowLeft, Star, Heart, CheckCircle, Wifi, Plug, Coffee, Users, MapPin, Send, RefreshCw, Volume2 } from 'lucide-react';
+import { ArrowLeft, Star, Heart, CheckCircle, Wifi, Plug, Coffee, Users, MapPin, Send, RefreshCw, Volume2, ImageOff } from 'lucide-react';
 
 interface SpotDetailsProps {
   spot: StudySpot;
@@ -27,6 +26,7 @@ export const SpotDetails: React.FC<SpotDetailsProps> = ({
   const [newReviewText, setNewReviewText] = useState('');
   const [newReviewRating, setNewReviewRating] = useState(5);
   const [showCrowdUpdate, setShowCrowdUpdate] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const handleSubmitReview = (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,19 +50,33 @@ export const SpotDetails: React.FC<SpotDetailsProps> = ({
   return (
     <div className="bg-gray-50 min-h-full pb-8">
       {/* Hero Image Section */}
-      <div className="relative h-72 w-full">
-        <img src={spot.image} alt={spot.name} className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+      <div className="relative h-72 w-full bg-gray-800">
+        {!imageError ? (
+          <img 
+            src={spot.image} 
+            alt={spot.name} 
+            className="w-full h-full object-cover" 
+            onError={() => setImageError(true)}
+            referrerPolicy="no-referrer"
+          />
+        ) : (
+          <div className="w-full h-full flex flex-col items-center justify-center text-white/50">
+             <ImageOff size={48} className="mb-2 opacity-50" />
+             <span className="text-sm font-medium uppercase tracking-wider opacity-60">Image Unavailable</span>
+          </div>
+        )}
+        
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
         
         <button
           onClick={onBack}
-          className="absolute top-4 left-4 bg-white/90 backdrop-blur-md p-2.5 rounded-full shadow-lg hover:bg-white transition-all active:scale-90"
+          className="absolute top-4 left-4 bg-white/90 backdrop-blur-md p-2.5 rounded-full shadow-lg hover:bg-white transition-all active:scale-90 z-10"
           aria-label="Go back"
         >
           <ArrowLeft size={22} className="text-gray-800" />
         </button>
         
-        <div className="absolute bottom-6 left-5 text-white right-5">
+        <div className="absolute bottom-6 left-5 text-white right-5 z-10">
            <div className="inline-block px-2 py-0.5 rounded-md bg-white/20 backdrop-blur-sm border border-white/10 text-xs font-semibold mb-2">
              {spot.type}
            </div>
